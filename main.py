@@ -45,8 +45,22 @@ class Task:
             return self.priority < other.priority
 
     @classmethod
-    def parse_time_delta(cls, task_estimation):
-        return
+    def parse_time_delta(cls, task_estimation_string):
+        return None
+
+
+    @classmethod
+    def parse_due_date(cls, task_due_date_string):
+        try:
+            try:
+                return arrow.get(task_due_date_string, 'MM-DD-YYYY')
+            except:
+                return arrow.get(f'{task_due_date_string}-{arrow.get().year}', 'MM-DD-YYYY')
+        except:
+            try:
+                return None
+            except:
+                return None
 
 
 class Prioritizer:
@@ -86,7 +100,7 @@ class CliParser:
             "description": task_description,
             "critical": task_critical,
             "time_estimate": Task.parse_time_delta(task_estimation),
-            "due_date": task_due_date
+            "due_date": Task.parse_due_date(task_due_date)
         }
 
 
